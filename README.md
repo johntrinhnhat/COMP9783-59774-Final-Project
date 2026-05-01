@@ -51,7 +51,7 @@ server/
   │   ├── Crud.js          (CRUD operations)
   │   └── UUIDUtilsES6.js  (ID generation)
   ├── server.js            (Express app)
-  └── package.json
+  └── package.json 
 ```
 
 ---
