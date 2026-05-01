@@ -201,7 +201,7 @@ export default function App() {
     return (
       <div className="min-h-screen bg-[#ECEDF6] flex flex-col items-center px-4 py-10 sm:py-14">
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-wider text-[#3F3D56] mb-8 sm:mb-10">
-          TODO LIST
+          TO—DO LIST
         </h1>
         <div className="w-full max-w-3xl">
           {/* Top bar skeleton */}
@@ -254,7 +254,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#ECEDF6] flex flex-col items-center px-4 py-10 sm:py-14">
       <h1 className="text-3xl sm:text-4xl font-extrabold tracking-wider text-[#3F3D56] mb-8 sm:mb-10">
-        TODO LIST
+        TO-DO APP
       </h1>
 
       <div className="w-full max-w-3xl">
@@ -344,10 +344,7 @@ export default function App() {
 
       {/* Copyright Footer */}
       <footer className="mt-12 pb-8 text-center">
-        <p className="text-gray-500 text-sm">
-          © 2026 Nhat Khoi Trinh
-          
-        </p>
+        <p className="text-gray-500 text-sm">© 2026 Nhat Khoi Trinh</p>
       </footer>
     </div>
   );

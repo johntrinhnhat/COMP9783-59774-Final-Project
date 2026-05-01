@@ -1,336 +1,138 @@
 # Todo Application
 
-A full-stack web application for task management with a modern React frontend and Express.js backend. Users can create, read, update, and delete tasks with filtering and sorting capabilities.
+A full-stack task management application built with React and Express.js.
 
-## Table of Contents
+## Quick Start
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Component Architecture](#component-architecture)
-- [Development](#development)
+### Requirements
 
----
+- Node.js v16+
+- npm v8+
 
-## Features
+### Installation & Run
 
-✅ **Create Tasks** – Add new todos with title, emoji, and timestamp  
-✅ **Read Tasks** – Fetch all tasks from the backend  
-✅ **Update Tasks** – Edit existing tasks or toggle completion status  
-✅ **Delete Tasks** – Remove tasks with confirmation dialog  
-✅ **Filter Tasks** – View all, active, or completed tasks  
-✅ **Sort Tasks** – Sort by newest or oldest first  
-✅ **Task State Tracking** – Visual feedback for completed tasks  
-✅ **Error Handling** – Graceful error messages and user feedback  
-✅ **Responsive Design** – Mobile-friendly UI with Tailwind CSS
+```bash
+# Terminal 1 - Backend (Port 3000)
+cd server
+npm install
+npm run dev
+
+# Terminal 2 - Frontend (Port 5174)
+cd client
+npm install
+npm run dev
+```
+
+Open http://localhost:5174
 
 ---
 
 ## Tech Stack
 
-### Frontend
-
-- **React 19** – UI library
-- **Vite 8** – Fast development build tool
-- **Tailwind CSS 4** – Utility-first CSS framework
-- **React Router DOM 7** – Client-side routing
-- **Lucide React 1** – Icon library
-- **ESLint** – Code linting and quality
-
-### Backend
-
-- **Node.js** – JavaScript runtime
-- **Express.js 5** – Web framework
-- **CORS** – Cross-Origin Resource Sharing middleware
-- **Helmet** – Security headers middleware
-- **Morgan** – HTTP request logging
-- **UUID** – Unique identifier generation
-- **Nodemon** – Development auto-reload tool
+**Frontend:** React 19, Vite, Tailwind CSS  
+**Backend:** Express.js, Node.js  
+**Tools:** Nodemon, CORS, Helmet, Morgan, UUID
 
 ---
 
 ## Project Structure
 
 ```
-COMP9783-59774-Final-Project/
-├── client/                          # React frontend
-│   ├── public/                      # Static assets
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── ErrorBoundary.jsx   # Error handling wrapper
-│   │   │   ├── Layout.jsx          # App layout container
-│   │   │   ├── TodoForm.jsx        # Add/Edit task modal
-│   │   │   ├── TodoItem.jsx        # Individual task component
-│   │   │   └── TodoList.jsx        # Tasks list container
-│   │   ├── App.jsx                 # Main app component & state management
-│   │   ├── main.jsx                # React entry point
-│   │   └── style.css               # Global styles
-│   ├── index.html                  # HTML template
-│   ├── vite.config.js              # Vite configuration
-│   ├── eslint.config.js            # ESLint configuration
-│   └── package.json                # Frontend dependencies
-│
-├── server/                          # Express.js backend
-│   ├── lib/
-│   │   ├── Crud.js                 # CRUD operations (in-memory storage)
-│   │   └── UUIDUtilsES6.js         # UUID generation utility
-│   ├── server.js                   # Express server setup & routes
-│   └── package.json                # Backend dependencies
-│
-└── README.md                        # This file
+client/
+  ├── src/
+  │   ├── components/      (TodoForm, TodoList, TodoItem)
+  │   ├── hooks/           (useTasks, useTaskFilter)
+  │   ├── App.jsx          (Main component)
+  │   └── constants.js     (Config & API URLs)
+  └── package.json
+
+server/
+  ├── lib/
+  │   ├── Crud.js          (CRUD operations)
+  │   └── UUIDUtilsES6.js  (ID generation)
+  ├── server.js            (Express app)
+  └── package.json
 ```
 
 ---
 
-## Installation
+## Features
 
-### Prerequisites
-
-- **Node.js** (v16 or higher)
-- **npm** (v8 or higher)
-
-### Setup
-
-1. **Clone the repository:**
-
-   ```bash
-   git clone <repository-url>
-   cd COMP9783-59774-Final-Project
-   ```
-
-2. **Install server dependencies:**
-
-   ```bash
-   cd server
-   npm install
-   ```
-
-3. **Install client dependencies:**
-   ```bash
-   cd ../client
-   npm install
-   ```
-
----
-
-## Usage
-
-### Start Development Servers
-
-**Terminal 1 – Start Backend (Port 3000):**
-
-```bash
-cd server
-npm run dev
-```
-
-**Terminal 2 – Start Frontend (Port 5173):**
-
-```bash
-cd client
-npm run dev
-```
-
-Open your browser and navigate to `http://localhost:5173`
-
-### Build for Production
-
-**Build frontend:**
-
-```bash
-cd client
-npm run build
-```
-
-**Production server:**
-
-```bash
-cd server
-npm start
-```
+✅ Create, Read, Update, Delete tasks  
+✅ Filter (All, Active, Completed)  
+✅ Sort (Newest, Oldest)  
+✅ Real-time UI updates  
+✅ Error handling  
+✅ Responsive design
 
 ---
 
 ## API Endpoints
 
-All endpoints return JSON responses.
+| Method | Endpoint      | Description    |
+| ------ | ------------- | -------------- |
+| GET    | `/read`       | Get all tasks  |
+| GET    | `/read/:id`   | Get task by ID |
+| POST   | `/create`     | Create task    |
+| PUT    | `/update/:id` | Update task    |
+| DELETE | `/delete/:id` | Delete task    |
 
-| Method   | Endpoint      | Description                 |
-| -------- | ------------- | --------------------------- |
-| `GET`    | `/read`       | Fetch all tasks             |
-| `GET`    | `/read/:id`   | Fetch a specific task by ID |
-| `POST`   | `/create`     | Create a new task           |
-| `PUT`    | `/update/:id` | Update an existing task     |
-| `DELETE` | `/delete/:id` | Delete a task               |
+### Example
 
-### Request/Response Examples
-
-**Create Task:**
-
-```json
-POST /create
-Content-Type: application/json
-
-{
-  "title": "Buy groceries",
-  "emoji": "🛒",
-  "completed": false
-}
-
-Response:
-{
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "title": "Buy groceries",
-  "emoji": "🛒",
-  "time": "4/30/2026, 8:35:26 PM",
-  "completed": false
-}
-```
-
-**Update Task:**
-
-```json
-PUT /update/{id}
-Content-Type: application/json
-
-{
-  "title": "Buy groceries",
-  "emoji": "🛒",
-  "completed": true
-}
+```bash
+# Create task
+curl -X POST http://localhost:3000/create \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Buy milk","emoji":"🥛","completed":false}'
 ```
 
 ---
 
-## Component Architecture
+## Key Components
 
-### App.jsx
+**Frontend:**
 
-**Root component** – manages global task state and API communication.
+- **App.jsx** - Main component with handlers
+- **useTasks** - Hook managing API calls & state
+- **useTaskFilter** - Hook for filtering & sorting
+- **TodoForm** - Add/Edit modal
+- **TodoList** - Task list display
+- **TodoItem** - Single task row
 
-- Fetches tasks on mount
-- Handles CRUD operations
-- Manages filtering and sorting
-- Provides handlers to child components
+**Backend:**
 
-### TodoForm.jsx
-
-**Modal dialog** – for creating or editing tasks.
-
-- Accepts title and emoji input
-- Validates non-empty titles
-- Supports both "add" and "edit" modes
-- Includes backdrop click to close
-
-### TodoList.jsx
-
-**Container component** – renders task items.
-
-- Stateless: receives tasks array and callbacks
-- Maps over tasks and renders TodoItem components
-
-### TodoItem.jsx
-
-**Presentational component** – renders individual task.
-
-- Displays title, emoji, and timestamp
-- Shows completion checkbox with visual feedback
-- Includes edit and delete buttons
-- Visual line-through effect for completed tasks
-
-### Layout.jsx
-
-**Page wrapper** – provides consistent UI structure.
-
-### ErrorBoundary.jsx
-
-**Error handling** – catches React errors and displays fallback UI.
+- **server.js** - Express routes & middleware
+- **Crud.js** - In-memory data store
+- **UUIDUtilsES6.js** - UUID generator
 
 ---
 
-## Backend Architecture
-
-### server.js
-
-Express app setup with:
-
-- Security headers (Helmet)
-- HTTP logging (Morgan)
-- CORS support for frontend communication
-- JSON body parsing
-- Route definitions
-
-### Crud.js
-
-In-memory data store with CRUD operations:
-
-- **createItem()** – Add new task with generated UUID
-- **readItems()** – Fetch all tasks or single task by ID
-- **updateItem()** – Modify existing task or create if not found
-- **deleteItem()** – Remove task from array
-
-### UUIDUtilsES6.js
-
-UUID generation utility:
-
-- Supports v1 (timestamp-based) and v4 (random) versions
-- Input validation for version parameter
-
----
-
-## Development
-
-### Available Scripts
+## Development Commands
 
 **Frontend:**
 
 ```bash
-npm run dev       # Start Vite dev server
-npm run build     # Build for production
-npm run lint      # Run ESLint
-npm run preview   # Preview production build
+npm run dev      # Start dev server
+npm run build    # Build for production
+npm run lint     # Run linter
 ```
 
 **Backend:**
 
 ```bash
-npm run dev       # Start with Nodemon auto-reload
-npm start         # Start production server
+npm run dev      # Start with auto-reload
+npm start        # Start production
 ```
-
-### Code Quality
-
-- **ESLint** enforces consistent code style
-- **Helmet** secures HTTP headers
-- **Error handling** on API calls with user-friendly messages
-- **React best practices** with hooks and component composition
-
-### Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
 
 ---
 
 ## Notes
 
-- **Data Persistence:** Currently uses in-memory storage (data resets on server restart)
-- **Production Ready:** To persist data, integrate a database (MongoDB, PostgreSQL, etc.)
-- **Environment Variables:** Consider using `.env` files for API endpoints in production
-- **Port Configuration:** Backend runs on port 3000, frontend on 5173 (Vite default)
+- Data stored in memory (resets on restart)
+- For production: Use a database (MongoDB, PostgreSQL)
+- Frontend: Port 5174 | Backend: Port 3000
 
 ---
 
-## License
-
-ISC License
-
----
-
-**Last Updated:** April 2026  
-**Developed for:** COMP9783-59774 Final Project
+**Course:** COMP9783-59774 Final Project  
+**License:** ISC
